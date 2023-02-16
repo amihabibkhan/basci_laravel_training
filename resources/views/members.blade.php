@@ -24,6 +24,7 @@
                     <table class="table text-center table-bordered">
                         <tr>
                             <th>SL</th>
+                            <th>Profile Picture</th>
                             <th>Name</th>
                             <th>Phone Number</th>
                             <th>E-mail</th>
@@ -34,6 +35,7 @@
                         @foreach($members as $member)
                             <tr>
                                 <td>{{ $member->id }}</td>
+                                <td><img style="width: 50px" src="{{ asset('storage') }}/{{ $member->profile_picture }}" alt=""></td>
                                 <td>{{ $member->name }}</td>
                                 <td>{{ $member->phone_number }}</td>
                                 <td>{{ $member->email }}</td>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Member;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class FirstController extends Controller
 {
@@ -17,12 +18,17 @@ class FirstController extends Controller
     public function createMember(Request $request)
     {
         // Member::create($request->all());
+        $path = null;
 
+        if ($request->has('profile_picture')){
+            $path = $request->file('profile_picture')->store('profile_picture');
+        }
 
         Member::create([
             'name' => $request->name,
             'phone_number' => $request->phone_number,
             'email' => $request->email,
+            'profile_picture' => $path,
             'password' => Hash::make($request->password),
             'about' => $request->about,
             'balance' => $request->balance,
@@ -35,13 +41,17 @@ class FirstController extends Controller
     public function memberList()
     {
         $members = Member::all();
-         return view('members', compact('members'));
+        return view('members', compact('members'));
     }
 
     // delete member
     public function deleteMember($id)
     {
-        Member::find($id)->delete();
+
+        $member = Member::find($id);
+        $path = $member->profile_picture;
+        Storage::delete($path);
+        $member->delete();
         return back();
     }
 
@@ -64,11 +74,20 @@ class FirstController extends Controller
     public function updateMemberFormSubmit(Request $request)
     {
         $id = $request->id;
+        $member = Member::find($id);
 
-        Member::find($id)->update([
+        $path = $member->profile_picture;
+
+        if ($request->has('profile_picture')){
+            Storage::delete($path);
+            $path = $request->file('profile_picture')->store('profile_picture');
+        }
+
+        $member->update([
             'name' => $request->name,
             'phone_number' => $request->phone_number,
             'email' => $request->email,
+            'profile_picture' => $path,
             'password' => Hash::make($request->password),
             'about' => $request->about,
             'balance' => $request->balance,

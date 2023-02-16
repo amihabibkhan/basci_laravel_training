@@ -20,7 +20,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('createMember') }}" method="POST">
+                        <form action="{{ route('createMember') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="mb-2">
                                 <label for="">Name</label>
@@ -39,8 +39,12 @@
                                 <input type="password" class="form-control" name="password">
                             </div>
                             <div class="mb-2">
+                                <label for="">Profile Picture</label>
+                                <input type="file" class="form-control" name="profile_picture">
+                            </div>
+                            <div class="mb-2">
                                 <label for="">About</label>
-                                <input type="text" class="form-control" name="about">
+                                <textarea class="form-control" name="about"></textarea>
                             </div>
                             <div class="mb-2">
                                 <label for="">Balance</label>
